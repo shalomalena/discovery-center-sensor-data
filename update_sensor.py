@@ -3,6 +3,7 @@ import json
 import pandas as pd
 import os
 from datetime import datetime, timezone
+import matplotlib.pyplot as plt
 
 URL = "https://monitormywatershed.org/dataloader/ajax/"
 RESULT_ID = "10543"
@@ -65,5 +66,24 @@ combined_df = combined_df.sort_values("valuedatetime")
 combined_df.to_csv(FILE_NAME, index=False)
 
 print(f"[{datetime.now().strftime('%H:%M:%S')}] CSV updated — {len(combined_df)} total rows")
+
+
+graph_df = combined_df.tail(50).copy()
+
+graph_df["valuedatetime"] = pd.to_datetime(graph_df["valuedatetime"])
+graph_df["datavalue"] = pd.to_numeric(graph_df["datavalue"], errors="coerce")
+
+graph_df = graph_df.dropna(subset=["datavalue"])
+
+plt.figure(figsize=(12, 6))
+plt.plot(graph_df["valuedatetime"], graph_df["datavalue"], marker="o")
+plt.title("Live Sensor Data - Most Recent 50 Readings")
+plt.xlabel("Date/Time")
+plt.ylabel("Sensor Value")
+plt.xticks(rotation=45)
+plt.tight_layout()
+
+plt.savefig("sensor_graph.png")
+plt.close()
 
   
