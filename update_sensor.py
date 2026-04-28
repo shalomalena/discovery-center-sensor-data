@@ -75,6 +75,17 @@ graph_df["datavalue"] = pd.to_numeric(graph_df["datavalue"], errors="coerce")
 
 graph_df = graph_df.dropna(subset=["datavalue"])
 
+if not graph_df.empty:
+    plt.figure(figsize=(12, 6))
+    plt.plot(graph_df["valuedatetime"], graph_df["datavalue"], marker="o")
+    plt.title("Live Sensor Data - Most Recent 50 Readings")
+    plt.xlabel("Date/Time")
+    plt.ylabel("Sensor Value")
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.savefig("sensor_graph.png")
+    plt.close()
+
 plt.figure(figsize=(12, 6))
 plt.plot(graph_df["valuedatetime"], graph_df["datavalue"], marker="o")
 plt.title("Live Sensor Data - Most Recent 50 Readings")
