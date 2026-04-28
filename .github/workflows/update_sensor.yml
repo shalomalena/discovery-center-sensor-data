@@ -26,6 +26,6 @@ jobs:
       - run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git add live_sensor_10543_all.csv
+          git add *.csv *.png
           git commit -m "Update sensor CSV" || echo "No changes"
           git push
